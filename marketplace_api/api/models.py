@@ -1,15 +1,17 @@
 from uuid import uuid4
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-
+from django.contrib.auth import get_user_model
 
 class User(AbstractUser):
     ...
 
 
 class Product(models.Model):
+    NAME_MAX_LENGTH = 200
+
     name = models.CharField(
-        max_length=200
+        max_length=NAME_MAX_LENGTH
     )
 
     description = models.TextField()
@@ -34,6 +36,7 @@ class Product(models.Model):
     def __str__(self):
         return self.name
     
+UserModel = get_user_model()
 
 class Order(models.Model):
     class StatusChoices(models.TextChoices):
@@ -49,7 +52,7 @@ class Order(models.Model):
     )
 
     user = models.ForeignKey(
-        User,
+        UserModel,
         on_delete=models.CASCADE,
     )
 
