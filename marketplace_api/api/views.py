@@ -4,32 +4,36 @@ from marketplace_api.api.serializers import ProductSerializer, OrderSerializer, 
 from marketplace_api.api.models import Product, Order
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from rest_framework import generics as api_views
+from rest_framework.permissions import IsAuthenticated
 
 
-@api_view(['GET'])
-def product_list(request):
-    products = Product.objects.all()
 
-    serializer = ProductSerializer(products, many=True)
+class ProductListApiView(api_views.ListAPIView):
+    queryset = Product.objects.filter(stock__gt=0)
+    serializer_class = ProductSerializer
 
-    return Response(serializer.data)
-
-@api_view(['GET'])
-def product_details(request, pk):
-    product = get_object_or_404(Product, pk=pk)
-
-    serializer = ProductSerializer(product)
-
-    return Response(serializer.data)
+class ProductDetailApiView(api_views.RetrieveAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
 
 
-@api_view(['GET'])
-def order_list(request):
-    orders = Order.objects.prefetch_related('items__product')
+class OrderListApiView(api_views.ListAPIView):
+    queryset = Order.objects.prefetch_related('items__product')
+    serializer_class = OrderSerializer
 
-    serializer = OrderSerializer(orders, many=True)
+class UserOrderListApiView(api_views.ListAPIView):
+    queryset = Order.objects.prefetch_related('items__product')
+    serializer_class = OrderSerializer
+    permission_classes = (
+        IsAuthenticated,
+    )
 
-    return Response(serializer.data)
+    def get_queryset(self):
+        user = self.request.user
+        qs = super().get_queryset()
+        return qs.filter(user=user)
+
 
 @api_view(['GET'])
 def product_info(request):
