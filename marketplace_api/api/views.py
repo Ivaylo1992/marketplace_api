@@ -12,17 +12,31 @@ from rest_framework.permissions import (
     AllowAny
     )
 from rest_framework.views import APIView
+from marketplace_api.api.filters import ProductFilter
+from rest_framework import filters
+from django_filters.rest_framework import DjangoFilterBackend
 
 
 class ProductListCreateAPIView(api_views.ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    
+
+    filterset_class = ProductFilter
+    filter_backends = (
+        DjangoFilterBackend,
+        filters.SearchFilter,
+        filters.OrderingFilter,
+    )
+
+    search_fields = ('name', 'description')
+    ordering_fields = ('name', 'price', 'stock')
+
     def get_permissions(self):
         self.permission_classes = (AllowAny,)
         if self.request.method == 'POST':
             self.permission_classes = (IsAdminUser,)
         return super().get_permissions()
+
 
 class ProductDetailAPIView(api_views.RetrieveUpdateDestroyAPIView):
     queryset = Product.objects.all()
