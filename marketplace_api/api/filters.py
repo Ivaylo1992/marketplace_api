@@ -1,5 +1,5 @@
 import django_filters
-from marketplace_api.api.models import Product
+from marketplace_api.api.models import Product, Order
 from rest_framework import filters
 
 class InStockFilterBackend(filters.BaseFilterBackend):
@@ -14,3 +14,11 @@ class ProductFilter(django_filters.FilterSet):
             'price': ['exact', 'lt', 'gt', 'range'],
         }
 
+
+class OrderFilter(django_filters.FilterSet):
+    class Meta:
+        model = Order
+        fields = {
+            'status': ['exact',],
+            'created_at': ['lt', 'gt', 'exact'],
+        }

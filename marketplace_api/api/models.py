@@ -40,7 +40,7 @@ UserModel = get_user_model()
 
 class Order(models.Model):
     class StatusChoices(models.TextChoices):
-        PENDING = 'Pening'
+        PENDING = 'Pending'
         CONFIRMED = 'Confirmed'
         CANCELED = 'Canceled'
     

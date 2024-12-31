@@ -42,6 +42,7 @@ class OrederItemSerializer(serializers.ModelSerializer):
 
 
 class OrderSerializer(serializers.ModelSerializer):
+    order_id = serializers.UUIDField(read_only=True)
     items = OrederItemSerializer(
             many=True,
             read_only=True
