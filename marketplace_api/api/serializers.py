@@ -20,7 +20,7 @@ class ProductSerializer(serializers.ModelSerializer):
         return value
     
 
-class OrederItemSerializer(serializers.ModelSerializer):
+class OrderItemSerializer(serializers.ModelSerializer):
     product_name = serializers.CharField(
         source='product.name'
     )
@@ -41,9 +41,28 @@ class OrederItemSerializer(serializers.ModelSerializer):
         )
 
 
+class OrderCreateSerializer(serializers.ModelSerializer):
+    class OrderItemCreateSerializer(serializers.ModelSerializer):
+        class Meta:
+            model = OrderItem
+            fields = ('product', 'quantity')
+    
+    items = OrderItemCreateSerializer(many=True)
+
+    class Meta:
+        model = Order
+        fields = (
+            'user',
+            'status',
+            'items',
+            'total_price',
+        )
+    
+
+
 class OrderSerializer(serializers.ModelSerializer):
     order_id = serializers.UUIDField(read_only=True)
-    items = OrederItemSerializer(
+    items = OrderItemSerializer(
             many=True,
             read_only=True
         )

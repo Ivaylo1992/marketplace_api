@@ -1,5 +1,6 @@
 from django.db.models import Max
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.decorators import action
 from rest_framework import filters
 from rest_framework import generics as api_views
 from rest_framework import viewsets
@@ -13,7 +14,8 @@ from marketplace_api.api.filters import (InStockFilterBackend, OrderFilter,
 from marketplace_api.api.models import Order, Product
 from marketplace_api.api.serializers import (OrderSerializer,
                                              ProductInfoSerializer,
-                                             ProductSerializer)
+                                             ProductSerializer,
+                                             OrderCreateSerializer)
 
 
 class ProductListCreateAPIView(api_views.ListCreateAPIView):
@@ -54,27 +56,26 @@ class ProductDetailAPIView(api_views.RetrieveUpdateDestroyAPIView):
 
 class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.prefetch_related('items__product')
+
     serializer_class = OrderSerializer
     permission_classes = (AllowAny, )
     filterset_class = OrderFilter
     filter_backends = (DjangoFilterBackend, )
 
-# class OrderListAPIView(api_views.ListAPIView):
-#     queryset = Order.objects.prefetch_related('items__product')
-#     serializer_class = OrderSerializer
+    permission_classes=[IsAuthenticated]
 
+    def get_queryset(self):
+        qs = super().get_queryset()
+        if not self.request.user.is_staff:
+            qs = qs.filter(user=self.request.user)
+        return qs	
 
-# class UserOrderListAPIView(api_views.ListAPIView):
-#     queryset = Order.objects.prefetch_related('items__product')
-#     serializer_class = OrderSerializer
-#     permission_classes = (
-#         IsAuthenticated,
-#     )
+    @action(detail=False, methods=['get'], url_path='user_orders')
+    def user_orders(self, request):
+        orders = self.get_queryset().filter(user=request.user)
+        serializer = self.get_serializer(orders, many=True)
 
-#     def get_queryset(self):
-#         user = self.request.user
-#         qs = super().get_queryset()
-#         return qs.filter(user=user)
+        return Response(serializer.data)
 
 
 class ProductInfoAPIView(APIView):
