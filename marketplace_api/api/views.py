@@ -11,11 +11,11 @@ from rest_framework.views import APIView
 
 from marketplace_api.api.filters import (InStockFilterBackend, OrderFilter,
                                          ProductFilter)
-from marketplace_api.api.models import Order, Product
+from marketplace_api.api.models import Order, Product, User
 from marketplace_api.api.serializers import (OrderSerializer,
                                              ProductInfoSerializer,
                                              ProductSerializer,
-                                             OrderCreateSerializer)
+                                             OrderCreateSerializer, UserSerializer)
 
 
 class ProductListCreateAPIView(api_views.ListCreateAPIView):
@@ -96,3 +96,9 @@ class ProductInfoAPIView(APIView):
         })
 
         return Response(serializer.data)
+    
+
+class UserListView(api_views.ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    pagination_class = None

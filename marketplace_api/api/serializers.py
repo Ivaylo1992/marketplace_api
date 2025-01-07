@@ -1,6 +1,16 @@
 from django.db import transaction
 from rest_framework import serializers
-from marketplace_api.api.models import Product, Order, OrderItem
+from marketplace_api.api.models import Product, Order, OrderItem, User
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = (
+            'username',
+            'email',
+            'is_staff',
+            'order_set',
+        )
 
 
 class ProductSerializer(serializers.ModelSerializer):
