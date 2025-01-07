@@ -12,3 +12,6 @@ db.sqlite3
 
 # VSCode specific
 .vscode/
+
+# Http files
+api.http
