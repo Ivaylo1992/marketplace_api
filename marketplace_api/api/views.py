@@ -58,11 +58,17 @@ class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.prefetch_related('items__product')
 
     serializer_class = OrderSerializer
-    permission_classes = (AllowAny, )
+    permission_classes = (IsAuthenticated, )
     filterset_class = OrderFilter
     filter_backends = (DjangoFilterBackend, )
 
-    permission_classes=[IsAuthenticated]
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+    def get_serializer_class(self):
+        if self.action == 'create' or self.action == 'update':
+            return OrderCreateSerializer
+        return super().get_serializer_class()
 
     def get_queryset(self):
         qs = super().get_queryset()

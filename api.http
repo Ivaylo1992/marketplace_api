@@ -49,15 +49,36 @@ Content-Type: application/json
 
 POST http://localhost:8000/orders/ HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM1NzMzMTY2LCJpYXQiOjE3MzU3MzI4NjYsImp0aSI6ImNkMzY4ZjQwN2Q5ZDQ5MjI5NzhhNDg4MjFhM2Y3ZWVhIiwidXNlcl9pZCI6Mn0.lQjt1JgjHae1lPuQHkbgMaBM2aeAENeicJySntaFVVk
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM2MjIzNDIxLCJpYXQiOjE3MzYyMjMxMjEsImp0aSI6IjRmMjgyODVmMzQwMTRiOTBiZWQ2M2IyNjU3NzgzY2Y2IiwidXNlcl9pZCI6Mn0.t-AmRkTSryOmCiwIL0XwFB3urmRO5MYV1tdl7z0aZmU
 
 {
-            "user": 2,
             "status": "Pending",
             "items": [
                 {
-                    "product": 1,
+                    "product": 3,
                     "quantity": 1
                 }
             ]
 }
+
+
+###
+
+PUT http://localhost:8000/orders/6e0c6228-908f-4eea-8a82-7f5f087a3a65/ HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM2MjI0NjE0LCJpYXQiOjE3MzYyMjQzMTQsImp0aSI6IjdmZTYzNTRjNDE2YTRiZTY4MGNmZmNmYWUyZjM5YmM2IiwidXNlcl9pZCI6Mn0.PXv100Y64meWzuso1WkRjSV0xBLRt1cRpwEF1t2b_nI
+
+{
+    "status": "Confirmed"
+}
+
+###
+
+DELETE http://localhost:8000/orders/6e0c6228-908f-4eea-8a82-7f5f087a3a65/ HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM2MjI1MTExLCJpYXQiOjE3MzYyMjQ4MTEsImp0aSI6ImRhZTY0ODgzZWNjOTQ0ZjM5YzBiNzRmMTk2NGQwMWIzIiwidXNlcl9pZCI6Mn0.svML9brLZJ1XiNp9qO7wkkQWmpy0_57qOPu5kpBchUQ
+
+
+###
+
+GET http://localhost:8000/orders/6e0c6228-908f-4eea-8a82-7f5f087a3a65/ HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM2MjI1MTExLCJpYXQiOjE3MzYyMjQ4MTEsImp0aSI6ImRhZTY0ODgzZWNjOTQ0ZjM5YzBiNzRmMTk2NGQwMWIzIiwidXNlcl9pZCI6Mn0.svML9brLZJ1XiNp9qO7wkkQWmpy0_57qOPu5kpBchUQ

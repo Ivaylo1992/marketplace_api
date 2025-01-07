@@ -1,3 +1,4 @@
+from django.db import transaction
 from rest_framework import serializers
 from marketplace_api.api.models import Product, Order, OrderItem
 
@@ -47,16 +48,51 @@ class OrderCreateSerializer(serializers.ModelSerializer):
             model = OrderItem
             fields = ('product', 'quantity')
     
-    items = OrderItemCreateSerializer(many=True)
+    order_id = serializers.UUIDField(read_only=True)
+    items = OrderItemCreateSerializer(many=True, required=False)
+
+    def update(self, instance, validated_data):
+        orderitem_data = validated_data.pop('items', None)
+        with transaction.atomic():
+
+            instace = super().update(instance, validated_data)
+
+            if orderitem_data is not None:
+                instace.items.all().delete()
+
+                for item in orderitem_data:
+                    OrderItem.objects.create(
+                        order=instace,
+                        **item,
+                    )
+        return instace
+
+    def create(self, validated_data):
+        orderitem_data = validated_data.pop('items')
+        with transaction.atomic():
+            order = Order.objects.create(**validated_data)
+
+            for item in orderitem_data:
+                OrderItem.objects.create(
+                    order=order,
+                    **item
+                )
+        
+        return order
+        
 
     class Meta:
         model = Order
         fields = (
+            'order_id',
             'user',
             'status',
             'items',
-            'total_price',
         )
+
+        extra_kwargs = {
+            'user': {'read_only': True}
+        }
     
 
 
