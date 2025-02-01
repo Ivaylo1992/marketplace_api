@@ -1,5 +1,5 @@
 from django.contrib import admin
-from marketplace_api.api.models import Order, OrderItem, User
+from marketplace_api.api.models import Order, OrderItem, Product, User
 
 class OrderItemInline(admin.TabularInline):
     model = OrderItem
@@ -14,3 +14,7 @@ class OrderAdmin(admin.ModelAdmin):
 admin.site.register(Order, OrderAdmin)
 
 admin.site.register(User)
+
+@admin.register(Product)
+class ProductAdmin(admin.ModelAdmin):
+    ...
