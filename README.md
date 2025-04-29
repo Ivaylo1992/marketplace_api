@@ -66,3 +66,91 @@ To create a virtual environment and activate it, run the following commands:
 python -m venv venv
 venv\Scripts\activate
 ```
+
+### 3. Install project dependencies
+
+Once your virtual environment is activated, you need to install the required project dependencies. Run the following command:
+
+```bash
+pip install -r requirements.txt
+```
+
+### 4. Configure environment variables
+
+Create a `.env` file in the root directory of the project to store sensitive information such as your **JWT secret**, **Redis connection**, and **database credentials**.
+
+Example `.env` file:
+
+```bash
+DATABASE_URL=postgres://USER:PASSWORD@HOST:PORT/DBNAME
+JWT_SECRET_KEY=your_jwt_secret_key
+REDIS_URL=redis://localhost:6379/0
+```
+
+### 5. Run database migrations
+
+To set up the database schema and apply necessary migrations, run the following command:
+
+```bash
+python manage.py migrate
+```
+
+### 6. Create a superuser (admin account)
+
+To access the Django admin panel and manage the application, create a superuser by running the following command:
+
+```bash
+python manage.py createsuperuser
+```
+
+### 7. Start the development server
+
+To start the server and run the application locally, execute the following command:
+
+```bash
+python manage.py runserver
+```
+
+### 8. Access the application
+
+Once the development server is running, you can access the application through your web browser at: http://localhost:8000
+
+## 📖 API Documentation
+
+The **Marketplace API** is documented using **DRF Spectacular**. To view the full API documentation, navigate to the following URL:
+
+http://localhost:8000/api/schema/
+
+
+This URL will generate and display a complete **OpenAPI 3.0** specification for all the available endpoints, including request/response examples, parameter details, and more.
+
+### Features of the Documentation:
+
+- **Interactive UI**: The OpenAPI documentation is fully interactive, allowing you to test endpoints directly from the browser.
+- **Endpoint Overview**: All available API endpoints will be listed, including detailed descriptions, required parameters, and response formats.
+- **Authentication**: The documentation provides information on how to authenticate and pass tokens for accessing protected endpoints.
+
+> **Note**: Make sure the server is running (`python manage.py runserver`) to access the documentation at `http://localhost:8000/api/schema/`.
+
+---
+
+This section directs users to the auto-generated, interactive API documentation for easy reference and testing. Let me know if you'd like any additional details or adjustments! 🚀
+
+## 📦 Requirements
+
+Before running the project, ensure you have the following installed:
+
+- **Python 3.8+**
+- **PostgreSQL** (or another database supported by Django)
+- **Redis** (for caching and queue management, optional but recommended)
+- **pip** (Python package installer)
+
+### Installing Dependencies
+
+To install all the required dependencies, simply run:
+
+```bash
+pip install -r requirements.txt
+```
+
+
